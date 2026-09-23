@@ -11,7 +11,9 @@ builder.Services.AddSingleton<OcrService>();
 builder.Services.AddSingleton<ImplanteReader>();
 
 var allowedOrigins = (Environment.GetEnvironmentVariable("ALLOWED_ORIGINS") ?? "http://localhost:3000").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
+Console.WriteLine(
+    $"ALLOWED_ORIGINS: {Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")}"
+);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AppPolicy", policy =>
