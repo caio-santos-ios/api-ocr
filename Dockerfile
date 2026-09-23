@@ -30,6 +30,10 @@ RUN apt-get update \
         libxrender1 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 \
+    /usr/local/lib/libleptonica-1.82.0.so \
+    && ldconfig
+
 COPY --from=build /app/publish .
 
 ENV ASPNETCORE_ENVIRONMENT=Production
