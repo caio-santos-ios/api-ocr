@@ -1,0 +1,6 @@
+@api_ocr_HostAddress = http://localhost:5000
+
+GET {{api_ocr_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
