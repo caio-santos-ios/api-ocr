@@ -21,4 +21,4 @@ public record OcrResponse(
     EtiquetaImplante? Implante,
     float Confianca,
     string? TextoBruto,
-    string? TextoBrutoImplante);
+    string? DiagnosticoImplante);
