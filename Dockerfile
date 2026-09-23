@@ -10,6 +10,13 @@ RUN dotnet publish "api-ocr.csproj" -c Release -o /app/publish /p:UseAppHost=fal
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y \
+        libleptonica-dev \
+        tesseract-ocr \
+        tesseract-ocr-por \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/publish .
 
 ENV ASPNETCORE_ENVIRONMENT=Production
