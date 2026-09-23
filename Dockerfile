@@ -31,8 +31,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 \
-    /usr/local/lib/libleptonica-1.82.0.so \
-    && ldconfig
+    /usr/lib/x86_64-linux-gnu/libleptonica-1.82.0.so
+
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/local/lib
+
+RUN ls -la /usr/lib/x86_64-linux-gnu/liblept*
+RUN ls -la /usr/lib/x86_64-linux-gnu/libleptonica*
+RUN ldconfig -p | grep -E "lept|tesseract"
 
 COPY --from=build /app/publish .
 
