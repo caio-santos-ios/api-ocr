@@ -30,14 +30,15 @@ RUN apt-get update \
         libxrender1 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 \
+# Cria o nome EXATO esperado pelo Tesseract NuGet 5.2.0
+RUN cp -L /usr/lib/x86_64-linux-gnu/liblept.so.5 \
+    /app/libleptonica-1.82.0.so
+
+# Também deixa disponível no diretório de bibliotecas
+RUN cp -L /usr/lib/x86_64-linux-gnu/liblept.so.5 \
     /usr/lib/x86_64-linux-gnu/libleptonica-1.82.0.so
 
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/local/lib
-
-RUN ls -la /usr/lib/x86_64-linux-gnu/liblept*
-RUN ls -la /usr/lib/x86_64-linux-gnu/libleptonica*
-RUN ldconfig -p | grep -E "lept|tesseract"
+ENV LD_LIBRARY_PATH=/app:/usr/lib/x86_64-linux-gnu
 
 COPY --from=build /app/publish .
 
