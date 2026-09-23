@@ -27,8 +27,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseHttpsRedirection();
 
 app.UseCors("AppPolicy");
+
 app.MapControllers();
-app.UseHttpsRedirection();
 app.Run();
