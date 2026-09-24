@@ -20,11 +20,14 @@ RUN apt-get update \
 
 COPY --from=build /app/publish .
 
-# O wrapper "Tesseract" (NuGet) só procura as bibliotecas nativas em /app/x64
-# e com estes nomes exatos. Os symlinks apontam para as libs instaladas pelo apt.
+# O wrapper "Tesseract" (NuGet 5.2.0) precisa de dois ajustes em /app:
+#  1) só procura as bibliotecas nativas em /app/x64 e com estes nomes exatos;
+#  2) carrega "libdl" (libdl.so), que o glibc 2.34+ (Ubuntu 24.04) não traz mais, só libdl.so.2.
+# Os symlinks apontam para as libs instaladas pelo apt / pelo sistema.
 RUN mkdir -p /app/x64 \
     && ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5      /app/x64/libleptonica-1.82.0.so \
-    && ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /app/x64/libtesseract50.so
+    && ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /app/x64/libtesseract50.so \
+    && ln -s /lib/x86_64-linux-gnu/libdl.so.2            /app/libdl.so
 
 # Diagnóstico no build: falha se o pacote nativo do OpenCvSharp não foi publicado e
 # lista (no log do Render) qualquer biblioteca do sistema que ele precise e não exista.
